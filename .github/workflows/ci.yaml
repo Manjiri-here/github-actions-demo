@@ -1,0 +1,63 @@
+name: ci
+# permissions is required because we want to change tag name and put that tag name and commit the tage name into github hence for that write permission is required. By default only write permission is given.
+permissions:
+    contents: write
+
+env:
+    DOCKER_IMAGE: manjirinaik/github-actions-demo1
+
+on: 
+  push:
+    branches:
+        - main
+
+jobs:
+    build-image-and-push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout the code
+              uses: actions/checkout@v4
+            
+            - name: build docker image
+              uses: docker/setup-buildx-action@v3
+            
+            - name: login to docker hub
+              uses: docker/login-action@v3
+              with:
+                username: ${{secrets.DOCKERHUB_USERNAME}}
+                password: ${{secrets.DOCKERHUB_TOKEN}}
+
+            - name: build and push image
+              uses: docker/build-push-action@v6
+              with:
+                # here we give where is our DOcker file, we give . for current directory, and then the file name '/Dockerfile'
+                context: .
+                file: /Dockerfile
+                push: true
+                tags: ${{secrets.DOCKERHUB_USERNAME}}/${{env.DOCKER_IMAGE}}:${{github.run_id}}
+                platforms: linux/arm64,linux/amd64
+   
+                # we use the same pipeline which we hd written in jenkins.
+    update-k8s-yaml-with-newTag:
+        needs: build-image-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout the code
+              uses: actions/checkout@v4
+
+            - name: Update tag
+              run: |
+                sed -i '' 's|image: .*|image: ${{env.DOCKER_IMAGE}}:${{github.run_id}}|g' k8s/deployment.yaml
+        
+            - name: commit and push changes
+              run: |
+                git config --global user.mail "9manjiri@gmail.com"
+                git config --global user.name "Manjiri"
+                git add .
+                git commit -m "update tag in deployment.yaml"
+                git push
+
+                # above are same steps as we indluded in jnkins but they become ;ittle easier as we are using github itself.
+                        
+
+
