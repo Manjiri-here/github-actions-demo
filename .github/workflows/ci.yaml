@@ -35,7 +35,7 @@ jobs:
                 context: .
                 file: Dockerfile
                 push: true
-                tags: ${{secrets.DOCKERHUB_USERNAME}}/${{env.DOCKER_IMAGE}}:${{github.run_id}}
+                tags: ${{env.DOCKER_IMAGE}}:${{github.run_id}}
                 platforms: linux/arm64,linux/amd64
    
                 # we use the same pipeline which we hd written in jenkins.
