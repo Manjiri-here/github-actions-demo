@@ -32,7 +32,7 @@ jobs:
               with:
                 # here we give where is our DOcker file, we give . for current directory, and then the file name '/Dockerfile'
                 context: .
-                file: /Dockerfile
+                file: Dockerfile
                 push: true
                 tags: ${{secrets.DOCKERHUB_USERNAME}}/${{env.DOCKER_IMAGE}}:${{github.run_id}}
                 platforms: linux/arm64,linux/amd64
