@@ -48,7 +48,7 @@ jobs:
 
             - name: Update tag
               run: |
-                sed -i '' 's|image: .*|image: ${{env.DOCKER_IMAGE}}:${{github.run_id}}|g' k8s/deployment.yaml
+                sed -i 's|image: .*|image: ${{env.DOCKER_IMAGE}}:${{github.run_id}}|g' k8s/deployment.yaml
         
             - name: commit and push changes
               run: |
