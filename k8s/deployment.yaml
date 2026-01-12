@@ -13,5 +13,5 @@ spec:
         app: mywebsite
     spec:
         containers:
-          - image:  manjirinaik/github-actions-demo1:v1
+          - image: manjirinaik/github-actions-demo1:20914896250
             name:  mywebsite
