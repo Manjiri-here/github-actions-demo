@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mywebsite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mywebsite
+  template:
+    metadata:
+      labels:
+        app: mywebsite
+    spec:
+        containers:
+          - image:  manjirinaik/github-actions-demo1:v1
+            name:  mywebsite
