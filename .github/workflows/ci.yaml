@@ -1,5 +1,5 @@
 name: ci
-# permissions is required because we want to change tag name and put that tag name and commit the tage name into github hence for that write permission is required. By default only write permission is given.
+# permissions is required because we want to change tag name and put that tag name and commit the tage name into github hence for that read permission is required. By default only write permission is given.
 permissions:
     contents: write
 
